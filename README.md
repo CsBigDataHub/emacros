@@ -87,7 +87,7 @@ Next, the function saves the macro definition to a file named `MODE-mac.el`, whe
 
 When `emacros-name-last-kbd-macro-add` is called with prefix argument, as in
 
-``C-u M-x emacros-name-last-kbd-macro-add RET`
+`C-u M-x emacros-name-last-kbd-macro-add RET`
 
 then you will be prompted to explicitly enter the name of a file for saving the macro.
 
@@ -107,7 +107,7 @@ in your Emacs initialization file.
 
 Once a macro MACRO has a name MACRONAME, this name is in fact a command which causes the macro to be inserted before the cursor: typing
 
-``M-x MACRONAME RET`
+`M-x MACRONAME RET`
 
 inserts MACRO. This has the disadvantage that completion and history take into account all command names rather than just macro names. The problem is resolved by the function `emacros-execute-named-macro`.This function should probably be bound to a key sequence such as `Ctrl-c e`. The line
 
@@ -276,7 +276,7 @@ The Emacros package, by contrast, provides support for saving keyboard macros to
 
 #### Acknowledgment
 
-This is a package created by **Thomas Becker**. I found this package useful and wanted to submit to `MELPA`.
+This was created by **Thomas Becker**. I found this package useful and wanted to submit to `MELPA`.
 
 Original source code can be found at - http://thbecker.net/free_software_utilities/emacs_lisp/emacros/emacros.html.
 However it is quite outdated. I have resolved all the flycheck warning in his code before submitting it to `MELPA`.
