@@ -277,7 +277,8 @@ The Emacros package, by contrast, provides support for saving keyboard macros to
 #### Acknowledgment
 
 This is a package created by **Thomas Becker**. I found this package useful and wanted to submit to `MELPA`.
-original source code can be found at - http://thbecker.net/free_software_utilities/emacs_lisp/emacros/emacros.html
+
+Original source code can be found at - http://thbecker.net/free_software_utilities/emacs_lisp/emacros/emacros.html.
 However it is quite outdated. I have resolved all the flycheck warning in his code before submitting it to `MELPA`.
 
 Copying Information
