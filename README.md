@@ -9,6 +9,7 @@ Emacros: A Package for Organizing, Saving, Loading, and Conveniently Executing Y
 - [Emacros: A Package for Organizing and Handling Keyboard Macros in GNU Emacs](#emacros-a-package-for-organizing-and-handling-keyboard-macros-in-gnu-emacs)
     - [Overview](#overview)
     - [Download and Installation](#download-and-installation)
+        - [global macro dir](#global-macro-dir)
     - [Feedback and Bug Reports](#feedback-and-bug-reports)
     - [Emacros Manual](#emacros-manual)
         - [Naming, Saving, and Executing Keyboard Macros](#naming-saving-and-executing-keyboard-macros)
@@ -56,6 +57,7 @@ Click [here](http://thbecker.net/free_software_utilities/emacs_lisp/emacros/emac
 
 to your Emacs initialization file, where you have replaced the string "DIR" in the `load-file` call with the actual directory where `emacros.elc` resides. "DIR" may of course be omitted if `emacros.elc` is in a directory where Emacs looks for lisp files. Be sure to load `emacros.elc` and _not_ `emacros.el`. It is customary but not necessary to put the `.el` file in the same directory as the `.elc` file.
 
+### global macro dir
 The directory where your global macro files will be kept defaults to your home directory. You may wish to choose a different directory. In that case, you must also place the line
 
 (setq emacros-global-dir "DIR")
@@ -80,7 +82,7 @@ When you use Emacros, defining a keyboard macro is done as usual with `C-x (` an
 
 This function first prompts the user for a name to be given to the most recently defined keyboard macro. The name must neither be the empty string nor an integer, and it must only use letters, digits, and the characters `_` and `-`. The name of an existing Emacs Lisp function which is not a keyboard macro will not be accepted as input.
 
-Next, the function saves the macro definition to a file named `MODE-mac.el`, where `MODE` is the name of the current major mode. (See Section [Slashes in Mode Names](#slashes_in_mode_names) for a qualification of this statement.) This file can be in the [directory for global macros](#global_macro_dir), in which case the macro will be available whenever `MODE` is the major mode, or it can be in the current directory, in which case the macro will be locally available whenever `MODE` is the major mode and the file that is being visited is from this directory. The function will ask you to choose between `l` for local and `g` for global.
+Next, the function saves the macro definition to a file named `MODE-mac.el`, where `MODE` is the name of the current major mode. (See Section [Slashes in Mode Names](#slashes-in-mode-names) for a qualification of this statement.) This file can be in the [directory for global macros](#global-macro-dir), in which case the macro will be available whenever `MODE` is the major mode, or it can be in the current directory, in which case the macro will be locally available whenever `MODE` is the major mode and the file that is being visited is from this directory. The function will ask you to choose between `l` for local and `g` for global.
 
 When `emacros-name-last-kbd-macro-add` is called with prefix argument, as in
 
@@ -92,7 +94,7 @@ If a macro with the same name already exists in the file that you are saving to,
 
 It is possible to have several macro definitions with the same name, one in the global macro file `MODE-mac.el` and the others in local files `MODE-mac.el`. When macros are being loaded, the last local defintion of a multiply defined macro name becomes the active one. Functions that manipulate macro files, such as [emacros-remove-macro](#emacros-remove-macro), will always look in the local and global macro file to do their work.
 
-Note that the function `emacros-name-last-kbd-macro-add` does not add the newly defined macro to the keyboard macro ring that is maintained by the kmacro package. See Section [Emacros vs. Kmacro](#emacros_vs_kmacro) below for a more detailed explanation.
+Note that the function `emacros-name-last-kbd-macro-add` does not add the newly defined macro to the keyboard macro ring that is maintained by the kmacro package. See Section [Emacros vs. Kmacro](#emacros-vs-kmacro) below for a more detailed explanation.
 
 You may or may not want to bind the function `emacros-name-last-kbd-macro-add` to a key. You could, for example, bind it to `Ctrl-a` by placing the line
 
