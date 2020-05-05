@@ -7,25 +7,24 @@ Emacros: A Package for Organizing, Saving, Loading, and Conveniently Executing Y
 **Table of Contents**
 
 - [Emacros: A Package for Organizing and Handling Keyboard Macros in GNU Emacs](#emacros-a-package-for-organizing-and-handling-keyboard-macros-in-gnu-emacs)
-    - [Contents](#contents)
     - [Overview](#overview)
     - [Download and Installation](#download-and-installation)
     - [Feedback and Bug Reports](#feedback-and-bug-reports)
     - [Emacros Manual](#emacros-manual)
         - [Naming, Saving, and Executing Keyboard Macros](#naming-saving-and-executing-keyboard-macros)
-            - [Function emacros-name-last-kbd-macro-add](#function-emacros-name-last-kbd-macro-add)
-            - [Function emacros-execute-named-macro](#function-emacros-execute-named-macro)
-            - [Function emacros-auto-execute-named-macro](#function-emacros-auto-execute-named-macro)
+            - [emacros-name-last-kbd-macro-add](#emacros-name-last-kbd-macro-add)
+            - [emacros-execute-named-macro](#emacros-execute-named-macro)
+            - [emacros-auto-execute-named-macro](#emacros-auto-execute-named-macro)
         - [Loading Macro Definitions](#loading-macro-definitions)
             - [Automatic Macro Loading](#automatic-macro-loading)
             - [Manually Loading and Unloading Macros](#manually-loading-and-unloading-macros)
         - [Manipulating Macro Files](#manipulating-macro-files)
-            - [Function emacros-rename-macro](#function-emacros-rename-macro)
-            - [Function emacros-move-macro](#function-emacros-move-macro)
-            - [Function emacros-remove-macro](#function-emacros-remove-macro)
+            - [emacros-rename-macro](#emacros-rename-macro)
+            - [emacros-move-macro](#emacros-move-macro)
+            - [emacros-remove-macro](#emacros-remove-macro)
         - [Getting Help with Macros](#getting-help-with-macros)
-            - [Function emacros-show-macro-names](#function-emacros-show-macro-names)
-            - [Function emacros-show-macros](#function-emacros-show-macros)
+            - [emacros-show-macro-names](#emacros-show-macro-names)
+            - [emacros-show-macros](#emacros-show-macros)
         - [Subtleties](#subtleties)
             - [Getting the Right Major Mode](#getting-the-right-major-mode)
             - [Slashes in Mode Names](#slashes-in-mode-names)
@@ -77,7 +76,7 @@ A keyboard macro really consists of two components: the (complicated) key sequen
 
 When you use Emacros, defining a keyboard macro is done as usual with `C-x (` and `C-x )`, or with `F3` and `F4`, whichever you prefer. Emacros comes in when you name the macro: instead of giving the macro a name with Emacs' `name-last-kbd-macro` or with kmacro's `kmacro-name-last-macro`, you use the Emacros function `emacros-name-last-kbd-macro-add`.
 
-#### Function emacros-name-last-kbd-macro-add
+#### emacros-name-last-kbd-macro-add
 
 This function first prompts the user for a name to be given to the most recently defined keyboard macro. The name must neither be the empty string nor an integer, and it must only use letters, digits, and the characters `_` and `-`. The name of an existing Emacs Lisp function which is not a keyboard macro will not be accepted as input.
 
@@ -101,7 +100,7 @@ You may or may not want to bind the function `emacros-name-last-kbd-macro-add` t
 
 in your Emacs initialization file.
 
-#### Function emacros-execute-named-macro
+#### emacros-execute-named-macro
 
 Once a macro MACRO has a name MACRONAME, this name is in fact a command which causes the macro to be inserted before the cursor: typing
 
@@ -113,7 +112,7 @@ inserts MACRO. This has the disadvantage that completion and history take into a
 
 in your Emacs initialization file does the job. Typing `Ctrl-c e` is then similar to `M-x`, but for macros only.
 
-#### Function emacros-auto-execute-named-macro
+#### emacros-auto-execute-named-macro
 
 This function is provided as a further convenience for the impatient. `emacros-auto-execute-named-macro` should definitely be bound to a key if you intend to use it at all. For example, `Ctrl-c x` would be a good choice. Typing `Ctrl-c x` will then prompt for the name of a macro. The cursor will stay at its position in the current buffer. As soon as the sequence entered matches the name of a macro, the macro is inserted and regular editing is resumed without the need to type a `return`.
 
@@ -131,7 +130,7 @@ Everytime you read a file into Emacs with `Ctrl-x Ctrl-f`, `Ctrl-x Ctrl-v`, or `
 
 emacros-load-macros
 
-will be invoked automatically. It will load those macros that have been saved to files named `MODE-mac.el` in the current directory and in the directory for global macros. Here, `MODE` is name of the major mode that Emacs has chosen for the visited file. (See Section [Slashes in Mode Names](#slashes_in_mode_names) for a qualification of this statement.) The function can also be used interactively; the next section describes a situation where you may want to do this.
+will be invoked automatically. It will load those macros that have been saved to files named `MODE-mac.el` in the current directory and in the directory for global macros. Here, `MODE` is name of the major mode that Emacs has chosen for the visited file. (See Section [Slashes in Mode Names](#slashes-in-mode-names) for a qualification of this statement.) The function can also be used interactively; the next section describes a situation where you may want to do this.
 
 #### Manually Loading and Unloading Macros
 
@@ -156,13 +155,13 @@ If you want to keep previously loaded macros active rather than refreshing, then
 M-x load-file RET
 Load file: ~/thesis/TeX-mac.el RET
 
-This is also the way to load macros when you have used the function [`emacros-name-last-kbd-macro-add`](#emacros-name-last-kbd-macro-add) with a prefix argument, thus choosing your own file for saving your macros.
+This is also the way to load macros when you have used the function [`emacros-name-last-kbd-macro-add`](#function-emacros-name-last-kbd-macro-add) with a prefix argument, thus choosing your own file for saving your macros.
 
 ### Manipulating Macro Files
 
 There are three functions that allow you to manipulate macro definitions that have already been saved. You can rename macros, move them betweeen local and global macro files, and remove them entirely.
 
-#### Function emacros-rename-macro
+#### emacros-rename-macro
 
 This function assigns a new name to a previously named macro, making the change effective in the current session and in the local or global macro file pertaining to the current buffer, as appropriate. The old name is cleared of its meaning and may be used for a later macro. Typing
 
@@ -177,7 +176,7 @@ taken.
 
 You must change back to the buffer visiting the TeX file before you can access your macro for renaming. All this applies to moving and removing macros as well.
 
-#### Function emacros-move-macro
+#### emacros-move-macro
 
 This function moves macro definitions between the local and global macro file pertaining to the current buffer. Typing
 
@@ -185,7 +184,7 @@ M-x emacros-move-macro RET
 
 will prompt for the name of a macro to be moved and for a choice between "from local" and "from global" before performing the desired task.
 
-#### Function emacros-remove-macro
+#### emacros-remove-macro
 
 This function deletes macros from current macro files and disables them in the current session. Typing
 
@@ -197,7 +196,7 @@ will prompt for the name of the macro to be deleted. A macro that has been delet
 
 One way in which Emacros assists you with recalling macro names is by offering completion and command line history whenever the name of a macro is to be entered. Beyond that, there are two functions that provide help with keyboard macros. You can list the names of all currently defined macros, and you can obtain a list of the names of the macros together with a textual representation of each macro's definition. There is also the possibility to help yourself by inspecting and editing the files where the macros are stored.
 
-#### Function emacros-show-macro-names
+#### emacros-show-macro-names
 
 The function `emacros-show-macro-names` displays a list of the names of all currently defined macros in the Emacs `*Help*` buffer, much like completion lists are displayed in the `*Completion*` buffer. With prefix argument, as in
 
@@ -205,7 +204,7 @@ C-u M-x emacros-show-macro-names RET
 
 the function displays the macro names in a single column rather than in the two column format that Emacs uses for completion lists.
 
-#### Function emacros-show-macros
+#### emacros-show-macros
 
 The function `emacros-show-macros` displays a list of the names of all currently defined macros together with a textual representation of each macro's definition in the Emacs `*Help*` buffer.
 
