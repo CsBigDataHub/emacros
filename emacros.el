@@ -1,9 +1,9 @@
+;;; emacros.el --- Emacros: Organize and Handle Keyboard Macros -*- lexical-binding: t; -*-
 ;; This is EMACROS , an extension to GNU Emacs.
 ;; Copyright (C) 1993, 2020 Free Software Foundation, Inc.
 
 ;; Version: 0.1.0
 ;; URL: https://github.com/CsBigDataHub/emacros
-;; Package-Requires: (())
 ;; Keywords: tools macros
 
 ;; EMACROS is distributed in the hope that it will be useful,
@@ -30,7 +30,7 @@
 (defvar emacros-minibuffer-local-map
   nil
   "Local keymap for reading a new name for a keyboard macro from minibuffer.
-Used by emacros-read-macro-name1.")
+Used by `emacros-read-macro-name1'.")
 
 (setq emacros-minibuffer-local-map (make-sparse-keymap))
 
@@ -39,7 +39,7 @@ Used by emacros-read-macro-name1.")
 (define-key emacros-minibuffer-local-map "\r" 'emacros-exit-macro-read1)
 
 (defvar emacros-global-dir
-  "~/.emacs.d/emacros/"
+  (expand-file-name "emacros/" user-emacs-directory)
   "*Default directory for saving global kbd-macros.")
 
 (defvar emacros-glob-loc
@@ -59,8 +59,8 @@ This is a buffer-local variable.")
 
 (defvar emacros-last-saved
   nil
-  "Name of macro that was most recently moved, or saved
-using function emacros-name-last-kbd-macro-add with no prefix argument.
+  "Name of macro that was most recently moved, or saved using function
+emacros-name-last-kbd-macro-add with no prefix argument.
 This is a buffer-local variable.")
 
 (make-variable-buffer-local 'emacros-last-saved)
@@ -72,20 +72,20 @@ Each list is headed by the name of the mode to which it pertains.")
 
 (defvar emacros-default
   nil
-  "Used only as dynamically bound local variable. Defined globally in order
-to surpress compiler warning about free variable being used.")
+  "Used only as dynamically bound local variable.
+Defined globally in order to surpress compiler warning about
+free variable being used.")
 
 (defvar emacros-read-existing-macro-name-history-list
   nil
-  "History list variable for reading the name of an existing macro")
+  "History list variable for reading the name of an existing macro.")
 
 (defvar find-file-hook nil)
 (or (memq 'emacros-load-macros find-file-hook)
     (setq find-file-hook (cons 'emacros-load-macros find-file-hook)))
 
 (defun emacros-macrop (sym)
-  "Returns t if NAME, a symbol, is the name of a keyboard macro,
-nil otherwise."
+  "Returns t if NAME, a symbol SYM, is the name of a keyboard macro,nil otherwise."
   (and (null (integerp sym))
        (fboundp sym)
        (let ((sym-fu (symbol-function sym)))
@@ -148,8 +148,7 @@ from minibuffer. Used by emacros-read-macro-name1."
           (exit-minibuffer))))))
 
 (defun emacros-exit-macro-read2 ()
-  "Substitutes minibuffer-complete-and-exit
-when reading an existing macro or macroname.
+  "Substitutes minibuffer-complete-and-exit when reading an existing macro or macroname.
 Used by emacros-read-macro-name2."
   (interactive)
   (if (or (not (= (minibuffer-prompt-end) (point-max))) emacros-default)
@@ -206,7 +205,7 @@ PROMPT must be given without trailing colon and blank."
     (car (read-from-string inp))))
 
 (defun emacros-new-macro (nam mac)
-  "Assigns to the symbol NAME the function definition STRING."
+  "Assigns to the symbol NAM the function definition STRING MAC."
   (fset nam mac))
 
 (defun emacros-name-last-kbd-macro-add (&optional arg)
@@ -261,12 +260,12 @@ or moved to in the current buffer."
             (or (ding)
                 (y-or-n-p
                  (format
-                  "Buffer visiting file %s modified. Continue? (Will save!) "
+                  "Buffer visiting file %s modified. Continue? (Will save!)? "
                   filename))
                 (error "Aborted"))
           (or (ding)
               (y-or-n-p
-               (format "Buffer visiting %s macro file modified. Continue? (Will save!) " (if (= gl ?l) "local" "global")))
+               (format "Buffer visiting %s macro file modified. Continue? (Will save!)? " (if (= gl ?l) "local" "global")))
               (error "Aborted"))))
     (setq overwrite-existing-macro-definition (emacros-prompt-for-overwriting-macro-definition macro-file buf symbol gl arg filename))
     (let ((find-file-hook nil)
@@ -327,7 +326,7 @@ named, inserted, or manipulated macro in the current buffer."
              (buffer-modified-p buf))
         (or
          (ding)
-         (y-or-n-p "Buffer visiting local macro file modified. Continue? (May save!) ")
+         (y-or-n-p "Buffer visiting local macro file modified. Continue? (May save!)? ")
          (error "Aborted")))
     (while filename
       (let ((find-file-hook nil)
@@ -399,7 +398,7 @@ named, inserted, or manipulated macro in the current buffer."
              (ding)
              (y-or-n-p
               (format
-               "Buffer visiting global macro file modified. Continue? (May save!) "))
+               "Buffer visiting global macro file modified. Continue? (May save!)? "))
              (error "Aborted")))))
     (or renamed
         (error
@@ -467,7 +466,7 @@ or manipulated macro in the current buffer."
          (ding)
          (y-or-n-p
           (format
-           "Buffer visiting %s macro file modified. Continue? (May save!) "
+           "Buffer visiting %s macro file modified. Continue? (May save!)? "
            (if (= gl ?g) "global" "local")))
          (error "Aborted")))
     (if (and (setq buf2 (get-file-buffer filename2))
@@ -476,7 +475,7 @@ or manipulated macro in the current buffer."
          (ding)
          (y-or-n-p
           (format
-           "Buffer visiting %s macro file modified. Continue? (May save!) "
+           "Buffer visiting %s macro file modified. Continue? (May save!)? "
            (if (= gl ?g) "local" "global")))
          (error "Aborted")))
     (let ((find-file-hook nil)
@@ -577,7 +576,7 @@ inserted, or manipulated macro in the current buffer."
              (buffer-modified-p buf))
         (or
          (ding)
-         (y-or-n-p "Buffer visiting local macro file modified. Continue? (May save!) ")
+         (y-or-n-p "Buffer visiting local macro file modified. Continue? (May save!)? ")
          (error "Aborted")))
     (while filename
       (let ((find-file-hook nil)
@@ -616,7 +615,7 @@ inserted, or manipulated macro in the current buffer."
              (ding)
              (y-or-n-p
               (format
-               "Buffer visiting global macro file modified. Continue? (May save!) "))
+               "Buffer visiting global macro file modified. Continue? (May save!)? "))
              (error "Aborted")))))
     (if (not deleted)
         (error
@@ -851,7 +850,8 @@ just been started and the current file read from disc."
   (message "Macros refreshed for current buffer"))
 
 (defun emacros-prompt-for-overwriting-macro-definition (macro-file buf symbol gl custom-file filename)
-  "Checks if a macro definition exists in a macro file and if so, prompts for overwriting."
+  "Checks if a macro definition exists in a macro file and if so, prompts for overwriting.
+MACRO_FILE BUF SYMBOL GL CUSTOM-FILE FILE are required arguments"
   (if (and (not buf) (not (file-exists-p filename)))
       nil
     (let ((macro-name-exists-p nil))
@@ -877,17 +877,18 @@ just been started and the current file read from disc."
                   "Macro %s exists in file %s. Overwrite? "
                   symbol
                   filename))
-                (error "Aborted."))
+                (error "Aborted"))
           (or (ding)
               (y-or-n-p
                (format "Macro %s exists in %s macro file %s. Overwrite? "
                        symbol
                        (if (= gl ?l) "local" "global")
                        macro-file))
-              (error "Aborted.")))))))
+              (error "Aborted")))))))
 
 (defun emacros-insert-kbd-macro (symbol kbd-macro overwrite-existing-macro-definition)
-  "Inserts macro definition in current buffer, overwriting existing definition if requested."
+  "Inserts macro definition in current buffer, overwriting existing definition if requested.
+SYMBOL KBD_MACRO OVERWRITE-EXISTING-MACRO-DEFINITION"
   (if overwrite-existing-macro-definition
       (emacros-remove-macro-definition symbol))
   (goto-char (point-max))
