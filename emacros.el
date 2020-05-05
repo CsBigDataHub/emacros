@@ -1,5 +1,10 @@
 ;; This is EMACROS , an extension to GNU Emacs.
-;; Copyright (C) 1993, 2007 Free Software Foundation, Inc.
+;; Copyright (C) 1993, 2020 Free Software Foundation, Inc.
+
+;; Version: 0.1.0
+;; URL: https://github.com/CsBigDataHub/emacros
+;; Package-Requires: (())
+;; Keywords: tools macros
 
 ;; EMACROS is distributed in the hope that it will be useful,
 ;; but WITHOUT ANY WARRANTY.  No author or distributor
@@ -16,6 +21,11 @@
 ;; file named COPYING.  Among other things, the copyright notice
 ;; and this notice must be preserved on all copies.
 
+;;; Commentary:
+
+;;; Emacros: A Package for Organizing and Handling Keyboard Macros in GNU Emacs
+
+;;; Code:
 
 (defvar emacros-minibuffer-local-map
   nil

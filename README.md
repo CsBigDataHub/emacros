@@ -33,6 +33,7 @@ Emacros: A Package for Organizing, Saving, Loading, and Conveniently Executing Y
             - [Visiting Macro Files](#visiting-macro-files)
             - [Completing Macro Names](#completing-macro-names)
             - [Emacros vs. Kmacro](#emacros-vs-kmacro)
+            - [Acknowledgment](#acknowledgment)
     - [Copying Information](#copying-information)
 
 <!-- markdown-toc end -->
@@ -46,19 +47,19 @@ The purpose of keyboard macros in an editor is to expedite the entering of key s
 
 Emacros' way of saving macro definitions to files is based on the idea that macro definitions should be separated by major modes to which they pertain. The macros used when editing a TeX file, for example, will not be needed when working on a C++ program. Moreover, within each mode, there will be macros that should be available whenever Emacs is in that mode, and others that are relevant for specific projects only. Consequently, each mode should allow one global macro file and several local ones in different directories as needed. This arrangement makes it easy to keep track of existing macro definitions.
 
-
-
 Download and Installation
 -------------------------
 
-Click [here](http://thbecker.net/free_software_utilities/emacs_lisp/emacros/emacros.tar.gz) to download the Emacros package. To install Emacros, place the file `emacros.elc` in some directory DIR. Add the line
+**Method 1**
 
-(load-file "DIR/emacros.elc")
+Install from `MELPA`
 
-to your Emacs initialization file, where you have replaced the string "DIR" in the `load-file` call with the actual directory where `emacros.elc` resides. "DIR" may of course be omitted if `emacros.elc` is in a directory where Emacs looks for lisp files. Be sure to load `emacros.elc` and _not_ `emacros.el`. It is customary but not necessary to put the `.el` file in the same directory as the `.elc` file.
+**Method 2**
+
+clone the repository and add it to `load-path`
 
 ### global macro dir
-The directory where your global macro files will be kept defaults to your home directory. You may wish to choose a different directory. In that case, you must also place the line
+The directory where your global macro files will be kept defaults to your `.emacs.d` directory. You may wish to choose a different directory. In that case, you must also place the line
 
 (setq emacros-global-dir "DIR")
 
@@ -86,7 +87,7 @@ Next, the function saves the macro definition to a file named `MODE-mac.el`, whe
 
 When `emacros-name-last-kbd-macro-add` is called with prefix argument, as in
 
-C-u M-x emacros-name-last-kbd-macro-add RET
+``C-u M-x emacros-name-last-kbd-macro-add RET`
 
 then you will be prompted to explicitly enter the name of a file for saving the macro.
 
@@ -98,7 +99,7 @@ Note that the function `emacros-name-last-kbd-macro-add` does not add the newly 
 
 You may or may not want to bind the function `emacros-name-last-kbd-macro-add` to a key. You could, for example, bind it to `Ctrl-a` by placing the line
 
-(global-set-key "\\C-ca" 'emacros-name-last-kbd-macro-add)
+`(global-set-key "\\C-ca" 'emacros-name-last-kbd-macro-add)`
 
 in your Emacs initialization file.
 
@@ -106,11 +107,11 @@ in your Emacs initialization file.
 
 Once a macro MACRO has a name MACRONAME, this name is in fact a command which causes the macro to be inserted before the cursor: typing
 
-M-x MACRONAME RET
+``M-x MACRONAME RET`
 
 inserts MACRO. This has the disadvantage that completion and history take into account all command names rather than just macro names. The problem is resolved by the function `emacros-execute-named-macro`.This function should probably be bound to a key sequence such as `Ctrl-c e`. The line
 
-(global-set-key "\\C-ce" 'emacros-execute-named-macro)
+`(global-set-key "\\C-ce" 'emacros-execute-named-macro)`
 
 in your Emacs initialization file does the job. Typing `Ctrl-c e` is then similar to `M-x`, but for macros only.
 
@@ -138,24 +139,26 @@ will be invoked automatically. It will load those macros that have been saved to
 
 If you have been editing a file and then visit another one with a different mode and/or from a different directory, then the macros pertaining to the new file will be loaded, and all others that were loaded previously will remain active as well. If there are not too many macros around, this is probably what you want. In the long run, however, especially when you are one of those users that never leave Emacs, you would end up with all macros being loaded, thus rendering the separation by modes pointless. The function
 
-emacros-refresh-macros
+`emacros-refresh-macros`
 
 takes care of this problem. Typing
 
-M-x emacros-refresh-macros RET
+`M-x emacros-refresh-macros RET`
 
 will unload all previously loaded macros and load the ones pertaining to the current buffer, thus creating the same situation as if you had just started Emacs and found the file that the current buffer is visiting. Another situation that necessitates similar action arises when you do not work "mode-consciously." If, for example, you edit a file named `test` and then turn it into a `.tex` file by typing
 
-C-x C-w test.tex RET
+`C-x C-w test.tex RET`
 
 then Emacros will not automatically load the macros for TeX mode. To get things right, you must explicitly refresh your loaded macros:
 
-M-x emacros-refresh-macros RET
+`M-x emacros-refresh-macros RET`
 
 If you want to keep previously loaded macros active rather than refreshing, then you want to replace `emacros-refresh-macros` with [`emacros-load-macros`](#emacros-load-macros) in the above. Since the macro files `MODE-mac.el` contain ordinary Emacs Lisp code, you may also make macros available by loading macro files explicitly. This is done using the GNU Emacs function for loading Lisp code, as in
 
+```
 M-x load-file RET
 Load file: ~/thesis/TeX-mac.el RET
+```
 
 This is also the way to load macros when you have used the function [`emacros-name-last-kbd-macro-add`](#function-emacros-name-last-kbd-macro-add) with a prefix argument, thus choosing your own file for saving your macros.
 
@@ -167,7 +170,7 @@ There are three functions that allow you to manipulate macro definitions that ha
 
 This function assigns a new name to a previously named macro, making the change effective in the current session and in the local or global macro file pertaining to the current buffer, as appropriate. The old name is cleared of its meaning and may be used for a later macro. Typing
 
-M-x emacros-rename-macro RET
+`M-x emacros-rename-macro RET`
 
 will prompt for the old name that is to be changed and then for the new name, subject to the same restrictions that apply when naming with [`emacros-name-last-kbd-macro-add`](#emacros-name-last-kbd-macro-add). Completion and history are available when entering the old name. If a macro with the new name already exists in the file where the change takes place, you will be prompted for overwriting the existing defintion.
 
@@ -182,7 +185,7 @@ You must change back to the buffer visiting the TeX file before you can access y
 
 This function moves macro definitions between the local and global macro file pertaining to the current buffer. Typing
 
-M-x emacros-move-macro RET
+`M-x emacros-move-macro RET`
 
 will prompt for the name of a macro to be moved and for a choice between "from local" and "from global" before performing the desired task.
 
@@ -190,7 +193,7 @@ will prompt for the name of a macro to be moved and for a choice between "from l
 
 This function deletes macros from current macro files and disables them in the current session. Typing
 
-M-x emacros-remove-macro RET
+`M-x emacros-remove-macro RET`
 
 will prompt for the name of the macro to be deleted. A macro that has been deleted is irretrievably lost. As with [`emacros-rename-macro`](#emacros-rename-macro), the macro's name is made available for use with a different macro.
 
@@ -202,7 +205,7 @@ One way in which Emacros assists you with recalling macro names is by offering c
 
 The function `emacros-show-macro-names` displays a list of the names of all currently defined macros in the Emacs `*Help*` buffer, much like completion lists are displayed in the `*Completion*` buffer. With prefix argument, as in
 
-C-u M-x emacros-show-macro-names RET
+`C-u M-x emacros-show-macro-names RET`
 
 the function displays the macro names in a single column rather than in the two column format that Emacs uses for completion lists.
 
@@ -212,7 +215,7 @@ The function `emacros-show-macros` displays a list of the names of all currently
 
 Those parts of a macro definition that are plain character insertions are shown as strings in the textual representation. Function keys are shown using Emacs' standard textual representation. Control and alt keys are currently shown as "funny characters" in strings. For example, if you were to define a macro named `bm` with definition
 
-M-x buffer-menu RET
+`M-x buffer-menu RET`
 
 then the output of the function `emacros-show-macros` would display the following line for this macro:
 
@@ -230,8 +233,12 @@ There is a subtlety about Emacs' way of determining the major mode for a visited
 
 \\documentstyle\[...\]{...}
 
-to the top of the file and visit the file again later, you will find yourself in LaTeX mode. The fact that the major mode is different depending on what's in the file can of course cause a problem when using Emacros. However, this can be fixed by choosing your mode explicitly and loading macros manually: to be in LaTeX mode and have your LaTex macros loaded regardless of what's in the file, you must say
+to the top of the file and visit the file again later, you will find yourself in LaTeX mode. The fact that the major
+mode is different depending on what's in the file can of course cause a problem when using Emacros. However, this can be
+fixed by choosing your mode explicitly and loading macros manually: to be in LaTeX mode and have your LaTex macros
+loaded regardless of what's in the file, you must say
 
+```
 M-x latex-mode RET
 M-x emacros-refresh-macros RET
 
@@ -239,6 +246,7 @@ or
 
 M-x latex-mode RET
 M-x emacros-load-macros RET
+```
 
 The first version will unload all currently defined macros and load the ones for the LaTex buffer only. The second one loads the macros for the LaTeX buffer on top of what may already be loaded.
 
@@ -265,6 +273,12 @@ When a function requires the input of an existing macro name, completion works j
 Beginnig with GNU Emacs Version 22, the kmacro package is part of the GNU Emacs distribution. The kmacro package provides support for dealing with macros that have been defined and named in the current Emacs session. For example, it places all keyboard macros that have been defined and named with the function `kmacro-name-last-macro` on the keyboard macro ring for easy retrieval.
 
 The Emacros package, by contrast, provides support for saving keyboard macros to files and reloading them in future Emacs sessions. Keyboard macros that have been named and saved with the Emacros function `emacros-name-last-kbd-macro-add` are completely separate from the kmacro world. In particular, they are not placed on kmacro's macro ring. The main reason for this design decision is that in the Emacros world, where keyboard macros are saved and reloaded, there will often be a large number of macros. Holding them in a ring is not a very good way to keep track of them. The functions `emacros-execute-named-macro` and `emacros-auto-execute-named-macro` with their completion features and the help functions `emacros-show-macros` and `emacros-show-macro-names` are better suited for this purpose.
+
+#### Acknowledgment
+
+This is a package created by **Thomas Becker**. I found this package useful and wanted to submit to `MELPA`.
+original source code can be found at - http://thbecker.net/free_software_utilities/emacs_lisp/emacros/emacros.html
+However it is quite outdated. I have resolved all the flycheck warning in his code before submitting it to `MELPA`.
 
 Copying Information
 -------------------
