@@ -164,7 +164,7 @@ This is also the way to load macros when you have used the function [`emacros-na
 
 ### Manipulating Macro Files
 
-There are three functions that allow you to manipulate macro definitions that have already been saved. You can rename macros, move them betweeen local and global macro files, and remove them entirely.
+There are three functions that allow you to manipulate macro definitions that have already been saved. You can rename macros, move them between local and global macro files, and remove them entirely.
 
 #### emacros-rename-macro
 
@@ -252,7 +252,7 @@ The first version will unload all currently defined macros and load the ones for
 
 #### Slashes in Mode Names
 
-There are major modes for GNU Emacs whose name is not a constant string. The name of C++ mode, for example, is "`C++`". However, when you turn on `auto-newline` mode and `electric-mode`, the mode name changes to "`C++/la`". The slash in the mode name is of course a problem for Emacros, since it wants to use the mode name as part of a file name. Fortunately, however, it is also reasonable to ignore the qualifiations following the slash when it comes to saving macros. Therefore, Emacros uses only the part of the major mode name up to and not including the first forward slash when it builds its macro file names.
+There are major modes for GNU Emacs whose name is not a constant string. The name of C++ mode, for example, is "`C++`". However, when you turn on `auto-newline` mode and `electric-mode`, the mode name changes to "`C++/la`". The slash in the mode name is of course a problem for Emacros, since it wants to use the mode name as part of a file name. Fortunately, however, it is also reasonable to ignore the qualifications following the slash when it comes to saving macros. Therefore, Emacros uses only the part of the major mode name up to and not including the first forward slash when it builds its macro file names.
 
 #### Compatibility with Emacs' Macro Saving
 
@@ -266,11 +266,11 @@ The functions for saving, renaming, moving, or removing macro definitions make c
 
 #### Completing Macro Names
 
-When a function requires the input of an existing macro name, completion works just as it normally does in GNU Emacs. The only exception is the function [`emacros-auto-execute-named-macro`](#emacros-auto-execute-named-macro). Here, no completion lists are provided. The reason is that such a list would necessarily be misleading: suppose you have three macros named `abc`, `abd`, and `abcdefg`, and you have enetered `ab`. Listing all three as completions would be wrong because you cannot get to `abcdefg` with auto-execution. On the other hand, listing just `abc` and `abd` would be misleading as well because these are not the only macro names that start with `ab`. Auto-execution is really meant for frequently used macros whose names you just don't have trouble with.
+When a function requires the input of an existing macro name, completion works just as it normally does in GNU Emacs. The only exception is the function [`emacros-auto-execute-named-macro`](#emacros-auto-execute-named-macro). Here, no completion lists are provided. The reason is that such a list would necessarily be misleading: suppose you have three macros named `abc`, `abd`, and `abcdefg`, and you have entered `ab`. Listing all three as completions would be wrong because you cannot get to `abcdefg` with auto-execution. On the other hand, listing just `abc` and `abd` would be misleading as well because these are not the only macro names that start with `ab`. Auto-execution is really meant for frequently used macros whose names you just don't have trouble with.
 
 #### Emacros vs. Kmacro
 
-Beginnig with GNU Emacs Version 22, the kmacro package is part of the GNU Emacs distribution. The kmacro package provides support for dealing with macros that have been defined and named in the current Emacs session. For example, it places all keyboard macros that have been defined and named with the function `kmacro-name-last-macro` on the keyboard macro ring for easy retrieval.
+Beginning with GNU Emacs Version 22, the kmacro package is part of the GNU Emacs distribution. The kmacro package provides support for dealing with macros that have been defined and named in the current Emacs session. For example, it places all keyboard macros that have been defined and named with the function `kmacro-name-last-macro` on the keyboard macro ring for easy retrieval.
 
 The Emacros package, by contrast, provides support for saving keyboard macros to files and reloading them in future Emacs sessions. Keyboard macros that have been named and saved with the Emacros function `emacros-name-last-kbd-macro-add` are completely separate from the kmacro world. In particular, they are not placed on kmacro's macro ring. The main reason for this design decision is that in the Emacros world, where keyboard macros are saved and reloaded, there will often be a large number of macros. Holding them in a ring is not a very good way to keep track of them. The functions `emacros-execute-named-macro` and `emacros-auto-execute-named-macro` with their completion features and the help functions `emacros-show-macros` and `emacros-show-macro-names` are better suited for this purpose.
 
