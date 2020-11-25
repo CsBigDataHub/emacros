@@ -73,7 +73,7 @@ Each list is headed by the name of the mode to which it pertains.")
 (defvar emacros-default
   nil
   "Used only as dynamically bound local variable.
-Defined globally in order to surpress compiler warning about
+Defined globally in order to suppress compiler warning about
 free variable being used.")
 
 (defvar emacros-read-existing-macro-name-history-list
@@ -212,7 +212,7 @@ PROMPT must be given without trailing colon and blank."
   "Assigns a name to the last keyboard macro defined.
 Accepts letters and digits as well as \"_\" and \"-\".
 Requires at least one non-numerical character.
-Prompts for a choice betwen local and global saving.
+Prompts for a choice between local and global saving.
 With ARG, the user is prompted  for the name of a file
 to save to. Default is the last location that was saved
 or moved to in the current buffer."
